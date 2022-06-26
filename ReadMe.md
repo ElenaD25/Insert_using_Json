@@ -1,3 +1,3 @@
 # Demo
 
-This is just a demo for learning.
+This is just a demo for learning :)
