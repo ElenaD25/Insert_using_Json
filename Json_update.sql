@@ -1,5 +1,5 @@
 
-create proc [crc].[JsonBIND_Update] @json nvarchar(max), @schema_name varchar(max), @table_name varchar(max),  @condition varchar(max) 
+create proc [crc].[Update_using_Json] @json nvarchar(max), @schema_name varchar(max), @table_name varchar(max),  @condition varchar(max) 
 as
 	begin
 		DECLARE @key VARCHAR(MAX), @val varchar(max), @type int, @isFirstRow int = 1;

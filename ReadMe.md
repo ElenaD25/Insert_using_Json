@@ -8,7 +8,7 @@ Because we had a few tables that required this operation, i thought about doing 
     - condition (to avoid disaster :) )
     - json  
  
-## How it works
+## How it was made
 
 - first i started to create the stored procedure by giving it a name and declaring the params
 - i declared the variables that will be used in the cursor and also the variable that will contain the final statement
@@ -16,3 +16,11 @@ Because we had a few tables that required this operation, i thought about doing 
 - i started composing the cursor that goes through the json and, step by step, i added to the @sql variable the columns and the values needed for the update
 - i closed and deallocated the cursor and i added the condition to the @sql variable
 - i executed the @sql variable which contained the update statement
+
+## Execution syntax
+
+exec crc.Update_using_Json @schema_name = 'your schema name (in my case 'crc'), @table_name = 'your table name', @condition = 'your condition (for example: 'id = 2')', @json = '{"table_column_name":"value","table_column_name":"value", "table_column_name":"value"}' 
+
+
+!!Do not forget that the Json must contain the names of the columns in the table!!
+
