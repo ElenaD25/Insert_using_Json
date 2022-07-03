@@ -1,4 +1,4 @@
-CREATE proc [crc].[SP_Insert_with_Json] 
+CREATE proc [crc].[Insert_with_Json] 
 @json nvarchar(max), @schema varchar(max), @table varchar(max)
 as 
 	begin
