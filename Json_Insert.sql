@@ -2,13 +2,15 @@ CREATE proc [crc].[Insert_with_Json]
 @json nvarchar(max), @schema varchar(max), @table varchar(max)
 as 
 	begin
-		declare @key varchar(max), @val varchar(max), @type int;
-		declare @sql nvarchar(max); 
-		declare @values_to_insert varchar(max);
-		declare @isFirstCol int = 1;
-		declare @isFirstVal int = 1;
+		declare @key varchar(max), @val varchar(max), @type int,
+		@sql nvarchar(max),
+		@values_to_insert varchar(max),
+		@isFirstCol int = 1,
+		@isFirstVal int = 1,
+		@ErrorMessage nvarchar(4000),@ErrorSeverity int,@ErrorState int;
 
-		set @sql = 'insert into [' + @schema + '].[' + @table +'] ('
+	begin try 
+		set @sql = 'insert into ' + quotename(trim(@schema)) + '.' + quotename(trim(@table)) +' ('
 		set @values_to_insert = 'values('
 
 	declare db_cursor cursor local for
@@ -29,12 +31,12 @@ as
 									set @values_to_insert = @values_to_insert + ','
 									if (@type = 1)
 										begin
-											set @values_to_insert = @values_to_insert + ' ''' + @val + ''''
+											set @values_to_insert = @values_to_insert + ' ''' + trim(@val) + ''''
 										end
 
 									if(@type =2)
 										begin
-											set @values_to_insert = @values_to_insert +  @val 
+											set @values_to_insert = @values_to_insert +  trim(@val) 
 										end
 									
 							set @isFirstVal = 0
@@ -49,8 +51,17 @@ as
 	deallocate db_cursor
 	set @sql = @sql + ' )' + @values_to_insert + ');'
 
-	--Print(@sql)
-	exec(@sql)
-	
+	--print(@sql)
+	exec sp_executesql @sql
+	end try
+		begin catch
+			  SELECT 
+					@ErrorMessage = ERROR_MESSAGE(), 
+					@ErrorSeverity = ERROR_SEVERITY(), 
+					@ErrorState = ERROR_STATE();
+
+		   RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState)
+
+		end catch
+
 end
-GO
