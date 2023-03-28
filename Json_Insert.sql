@@ -38,9 +38,7 @@ as
 										begin
 											set @values_to_insert = @values_to_insert +  trim(@val) 
 										end
-									
 							set @isFirstVal = 0
-
 			fetch next from db_cursor into @key, @val, @type
 	end
 	
@@ -50,8 +48,7 @@ as
 	close db_cursor
 	deallocate db_cursor
 	set @sql = @sql + ' )' + @values_to_insert + ');'
-
-	--print(@sql)
+	
 	exec sp_executesql @sql
 	end try
 		begin catch
